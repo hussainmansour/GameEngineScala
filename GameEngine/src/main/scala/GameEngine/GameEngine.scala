@@ -21,13 +21,16 @@ import javax.swing.JFrame
     drawGame(state)
     var board = state._1
     var turn = state._2
-    
+
     inputButton.addActionListener(_ => {
       val (newState, valid) = controlGame(inputField.getText, (board,turn))
       if(valid) {
         drawGame(newState)
         board = newState._1
         turn += 1
+        inputField.setText("")
+      } else {
+        inputField.setText("Invalid input")
       }
     })
 

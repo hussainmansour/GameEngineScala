@@ -1,7 +1,7 @@
 package GUI
 
-import java.awt.{Color, Dimension, Font}
-import javax.swing.{ImageIcon, JButton, JFrame, JLabel, JTextField, WindowConstants}
+import java.awt.{Color, Dimension, Font, Frame, Window}
+import javax.swing.{ImageIcon, JButton, JFrame, JLabel, JTextField, SwingConstants, WindowConstants}
 
 def newFrame(text : String, width : Int, height : Int): JFrame = {
   val frame: JFrame = new JFrame()
@@ -10,8 +10,7 @@ def newFrame(text : String, width : Int, height : Int): JFrame = {
   frame.setLocationRelativeTo(null)
   frame.setResizable(false)
   frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
-  val image: ImageIcon = new ImageIcon("./pics/logo.png")
-  frame.setIconImage(image.getImage)
+  frame.setIconImage(new ImageIcon("./pics/logo.png").getImage)
   frame
 }
 
@@ -39,5 +38,31 @@ def newTextField(): JTextField = {
   inputField.setPreferredSize(new Dimension(300, 50))
   inputField.setFont(new Font("Monospace", Font.BOLD, 30))
   inputField
+}
+
+def newBoardCell(text : String, backgroundColor : Color, foregroundColor : Color, opaque : Boolean, fontSize : Int) : JLabel = {
+  val label = new JLabel()
+  label.setText(text)
+  label.setHorizontalAlignment(SwingConstants.CENTER)
+  label.setVerticalAlignment(SwingConstants.CENTER)
+  label.setForeground(foregroundColor)
+  label.setBackground(backgroundColor)
+  label.setFont(new Font("Monospace", Font.TYPE1_FONT, fontSize))
+  label.setOpaque(opaque)
+  label
+}
+
+def getMainFrame(text : String) : JFrame = {
+  val openWindows: Array[Window] = Window.getWindows
+  var frame : JFrame = null
+  for (window <- openWindows) {
+    window match {
+      case f: javax.swing.JFrame if f.getTitle == text =>
+        frame = f
+      case _ =>
+    }
+  }
+  frame.getContentPane.removeAll()
+  frame
 }
 
