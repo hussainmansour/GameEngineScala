@@ -1,7 +1,8 @@
 package MainMenu
-import GUI._
-import java.awt.GridLayout
-import javax.swing._
+import GUI.*
+
+import java.awt.{Color, GridLayout}
+import javax.swing.*
 
 def mainMenu() : JLabel = {
   val mainFrame = newFrame("Games", 1100, 800)
