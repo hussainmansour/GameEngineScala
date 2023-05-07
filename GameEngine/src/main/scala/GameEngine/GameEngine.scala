@@ -9,7 +9,7 @@ import javax.swing.JFrame
                 drawGame : ((Array[Array[String]], Int)) => Unit,
                 controlGame : (String, (Array[Array[String]], Int)) => ((Array[Array[String]], Int), Boolean)) : Unit = {
 
-    val inputFrame = newFrame("Input",400,100)
+    val inputFrame = newFrame("Input",500,150)
     val inputButton = newButton("Enter")
     val inputField = newTextField()
     inputFrame.setLayout(new FlowLayout())
