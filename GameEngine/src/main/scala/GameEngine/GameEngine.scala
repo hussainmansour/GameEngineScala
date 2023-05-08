@@ -10,6 +10,7 @@ import javax.swing.JFrame
                 controlGame : (String, (Array[Array[String]], Int)) => ((Array[Array[String]], Int), Boolean)) : Unit = {
 
     val inputFrame = newFrame("Input",500,150)
+    inputFrame.setLocation(1500,500)
     val inputButton = newButton("Enter")
     val inputField = newTextField()
     inputFrame.setLayout(new FlowLayout())
@@ -33,7 +34,6 @@ import javax.swing.JFrame
         inputField.setText("Invalid input")
       }
     })
-
   }
 
 
