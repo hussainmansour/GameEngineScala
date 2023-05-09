@@ -65,5 +65,9 @@ def ticTacToeController(move : String, state : (Array[Array[String]], Int)) : ((
 }
 
 def checkInput(move : String) : Boolean = move.length == 2 && move.charAt(0) > '0' && move.charAt(0) < '4' && move.charAt(1) >= 'a' && move.charAt(1) <= 'c'
-def getPoint(move : String) : (Int,Int) = (move.charAt(0).toInt - 48,move.charAt(1) - 96)
+def getPoint(move : String) : (Int,Int) ={
+  if(checkInput(move))
+    return (move.charAt(0).toInt - 48,move.charAt(1) - 96)
+(-1,-1)
+}
 
