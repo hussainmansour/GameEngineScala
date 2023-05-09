@@ -36,6 +36,9 @@ def queenDrawer(state : (Array[Array[String]], Int)) : Unit = {
 
 def queenController(move : String, state : (Array[Array[String]], Int)) : ((Array[Array[String]], Int),Boolean) = {
 
+  if(move.length < 2)
+    return ((state._1,state._2), false)
+
   val board = state._1
   val (x,y) = getPoint(move)
   var valid = true
@@ -49,7 +52,7 @@ def queenController(move : String, state : (Array[Array[String]], Int)) : ((Arra
   else if(valid && checkInput(move) && board(x)(y).charAt(1) != '♛')
     board(x)(y) = board(x)(y).updated(1,'♛')
 
-  ((board,state._2), valid)
+  ((board,state._2), true)
 }
 
 def drawBoard(grid : Array[Array[JLabel]], state : (Array[Array[String]], Int)) : Unit = {

@@ -26,7 +26,7 @@ def sudokuController(move : String, state : (Array[Array[String]], Int)) : ((Arr
 
   val board = state._1
   val input = move.split(" ")
-  if(!checkInput(input(0),input(1)))
+  if(input.length < 2 || !checkInput(input(0),input(1)))
     return ((board,state._2), false)
 
   val (x,y) = getPoint(input(0))
