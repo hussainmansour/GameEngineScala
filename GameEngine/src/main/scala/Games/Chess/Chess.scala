@@ -39,7 +39,7 @@ def chessController(move : String, state : (Array[Array[String]], Int)) : ((Arra
   val turn = state._2
   val input = move.split(" ")
 
-  if(input.length < 2)
+  if(input.length != 2 || input(0).length != 2 || input(1).length != 2)
     return ((board,state._2), false)
 
   val (x1,y1) = getPoint(input(0))

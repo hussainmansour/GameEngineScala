@@ -26,11 +26,12 @@ def sudokuController(move : String, state : (Array[Array[String]], Int)) : ((Arr
 
   val board = state._1
   val input = move.split(" ")
-  if(input.length < 2 || !checkInput(input(0),input(1)))
+
+  if(input.length != 2 || input(0).length != 2 || input(1).length != 1 || !checkInput(input(0),input(1)))
     return ((board,state._2), false)
 
   val (x,y) = getPoint(input(0))
-  if(board(x)(y) != " ") {
+  if(board(x)(y).charAt(0) != ' ' && board(x)(y).charAt(1) != 'M') {
     board(x)(y) = board(x)(y).updated(0,' ')
     return ((board,state._2), true)
   }
@@ -60,7 +61,7 @@ def drawBoard(grid : Array[Array[JLabel]], state : (Array[Array[String]], Int)) 
     grid(0)(i) = newBoardCell((i - 1 + 97).toChar.toString,null,Color.LIGHT_GRAY,false,20)
 
   for(i <- 1 until 10; j <- 1 until 10)
-    grid(i)(j) = newBoardCell(state._1(i)(j),new Color(230,230,240), new Color(20,25,25),true,30)
+    grid(i)(j) = newBoardCell(state._1(i)(j).charAt(0).toString,new Color(230,230,240), new Color(20,25,25),true,30)
 
 }
 
@@ -68,7 +69,7 @@ def validate(board : Array[Array[String]], x : Int, y : Int, dirX : Int, dirY : 
   var valid = true
   var (i,j) = (x,y)
   while((i + dirX > 0) && (j + dirY > 0) && (i + dirX < 10) && (j + dirY < 10)) {
-    if(board(i + dirX)(j + dirY) == value)
+    if(board(i + dirX)(j + dirY).charAt(0).toString == value)
       valid = false
     i += dirX
     j += dirY
@@ -80,7 +81,7 @@ def validateBox(board : Array[Array[String]], x : Int, y : Int, value : String) 
   var valid = true
   val (row,col) : (Int,Int) = (x + 2, y + 2)
   for(i <- x to row; j <- y to col) {
-    if(board(i)(j) == value)
+    if(board(i)(j).charAt(0).toString == value)
       valid = false
   }
   valid
@@ -90,7 +91,7 @@ def generateRandomBoard() : Array[Array[String]] = {
   val random = new Random()
   val grid = Array.ofDim[String](10, 10)
   for(i <- 0 to 9; j <- 0 to 9)
-    grid(i)(j) = " "
+    grid(i)(j) = "  "
   var row = 0
   var col = 0
   var randomNumber = 0
@@ -101,11 +102,11 @@ def generateRandomBoard() : Array[Array[String]] = {
     row = random.nextInt(9) + 1
     col = random.nextInt(9) + 1
     randomNumber = random.nextInt(9) + 1
-    if(grid(row)(col) == " ") {
+    if(grid(row)(col) == "  ") {
       val move = row.toString.concat((col - 1 + 97).toChar.toString).concat(" ").concat(randomNumber.toString)
       val state = sudokuController(move,(grid,1))
       if(state._2) {
-        grid(row)(col) == randomNumber.toString
+        grid(row)(col) = randomNumber.toString.concat("M")
       }
     } else {
       i -= 1
