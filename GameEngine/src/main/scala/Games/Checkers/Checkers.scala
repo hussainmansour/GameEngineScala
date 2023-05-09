@@ -9,6 +9,10 @@ def checkersInit() : (Array[Array[String]], Int) = {
 
 def checkersDrawer(state : (Array[Array[String]], Int)) : Unit = {
 
+  val x = '⚫'
+  val y = '⚪'
+
+
 }
 
 def checkersController(move : String, state : (Array[Array[String]], Int)) : ((Array[Array[String]], Int),Boolean) = {

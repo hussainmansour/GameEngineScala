@@ -1,4 +1,5 @@
 import javax.swing._
+import scala.swing._
 import java.awt.event.*
 import GameEngine.*
 import Games.Queen8.*
