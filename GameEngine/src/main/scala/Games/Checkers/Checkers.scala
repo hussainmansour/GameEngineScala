@@ -65,20 +65,20 @@ def checkersController(move : String, state : (Array[Array[String]], Int)) : ((A
     if(validate(board,x1,y1,x2,y2,turn)){
       board(x2)(y2) = board(x1)(y1)
       board(x1)(y1) = "b "
-      if(board(x2)(y2).charAt(1) == 0x26C0 && x2 == 1)
+      if(board(x2)(y2).charAt(1) == 0x26C0 && x2 == 8)
         board(x2)(y2) = board(x2)(y2).updated(1,0x26C1)
-      else if(board(x2)(y2).charAt(1) == 0x26C2 && x2 == 8)
+      else if(board(x2)(y2).charAt(1) == 0x26C2 && x2 == 1)
         board(x2)(y2) = board(x2)(y2).updated(1,0x26C3)
       return ((board,turn), valid)
     }
     else if(checkJump(board,x1,y1,x2,y2,turn)){
       board(x2)(y2) = board(x1)(y1)
       board(x1)(y1) = "b "
-      board(math.abs(x1+x1)/2)(math.abs(y1-y2)/2) = "b "
-      if(board(x2)(y2).charAt(1) == 0x26C0 && x2 == 1)
-        board(x2)(y2) = board(x2)(y2).updated(1,0x26C1)
-      else if(board(x2)(y2).charAt(1) == 0x26C2 && x2 == 8)
-        board(x2)(y2) = board(x2)(y2).updated(1,0x26C3)
+      board(math.abs(x1+x2)/2)(math.abs(y1+y2)/2) = "b "
+      if(board(x2)(y2).charAt(1) == 0x26C0 && x2 == 8)
+        board(x2)(y2) = board(x2)(y2).updated(1, 0x26C1)
+      else if(board(x2)(y2).charAt(1) == 0x26C2 && x2 == 1)
+        board(x2)(y2) = board(x2)(y2).updated(1, 0x26C3)
       return ((board,turn), valid)
     }
   }
@@ -112,23 +112,53 @@ def validate(board : Array[Array[String]], x : Int, y : Int, dirX : Int, dirY : 
     return false
   }
 
+  //king move
+  if(board(x)(y).charAt(1) == 0x26C1 && (math.abs(dirX - x) != 1 || math.abs(dirY - y) != 1)) {
+    println("here6")
+    return false
+  }
+  //king move
+  if(board(x)(y).charAt(1) == 0x26C3 && (math.abs(dirX - x) != 1 || math.abs(dirY - y) != 1)) {
+    println("here7")
+    return false
+  }
+
   true
 }
 
 // check for jumping over opponent's piece
 def checkJump(board : Array[Array[String]], x : Int, y : Int, dirX : Int, dirY : Int, turn : Int) : Boolean = {
-  if(board(dirX)(dirY).charAt(1) != ' ') {
+  if(board(dirX)(dirY).charAt(1) != ' ' || board((x+dirX)/2)(math.abs(y+dirY)/2).charAt(1) == ' ') {
     return false
   }
-  // check for player try to move piece in wrong direction
-  //ordinary move
-  if(board(x)(y).charAt(1) == 0x26C0 && (x+2 != dirX || math.abs(y-dirY) != 2 || board((x+dirX)/2)(math.abs(y-dirY)/2).charAt(1) != 0x26C2)) {
-    println("here6")
+  if (board(x)(y).charAt(1) == 0x26C0 && (dirX - x <= 0 || dirY - y > 1 || dirY - y < -1 || dirY == y)) {
+    println("here4")
     return false
   }
   //ordinary move
   if (board(x)(y).charAt(1) == 0x26C2 && (dirX - x >= 0 || dirY - y > 1 || dirY - y < -1 || dirY == y)) {
+    println("here5")
+    return false
+  }
+  // check for player try to move piece in wrong direction
+  if(board(x)(y).charAt(1) == 0x26C0 && (math.abs(x-dirX) != 2  || math.abs(y-dirY) != 2 || board((x+dirX)/2)(math.abs(y+dirY)/2).charAt(1) == 0x26C0 || board((x+dirX)/2)(math.abs(y+dirY)/2).charAt(1) == 0x26C1)) {
+    println("here6")
+    return false
+  }
+
+  if(board(x)(y).charAt(1) == 0x26C2 && (math.abs(x-dirX) != 2 || math.abs(y-dirY) != 2 || board((x+dirX)/2)(math.abs(y+dirY)/2).charAt(1) == 0x26C2 || board((x+dirX)/2)(math.abs(y+dirY)/2).charAt(1) == 0x26C3)) {
     println("here7")
+    return false
+  }
+
+  //king move
+  if(board(x)(y).charAt(1) == 0x26C1 && (math.abs(x-dirX) != 2 || math.abs(y-dirY) != 2 || board((x+dirX)/2)(math.abs(y+dirY)/2).charAt(1) == 0x26C0 || board((x+dirX)/2)(math.abs(y+dirY)/2).charAt(1) == 0x26C1)) {
+    println("here8")
+    return false
+  }
+  //king move
+  if(board(x)(y).charAt(1) == 0x26C3 && (math.abs(x-dirX) != 2 || math.abs(y-dirY) != 2 || board((x+dirX)/2)(math.abs(y+dirY)/2).charAt(1) == 0x26C2 || board((x+dirX)/2)(math.abs(y+dirY)/2).charAt(1) == 0x26C3)) {
+    println("here9")
     return false
   }
 
