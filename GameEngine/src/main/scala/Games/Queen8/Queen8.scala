@@ -36,6 +36,9 @@ def queenDrawer(state : (Array[Array[String]], Int)) : Unit = {
 
 def queenController(move : String, state : (Array[Array[String]], Int)) : ((Array[Array[String]], Int),Boolean) = {
 
+  if(!checkInput(move) )
+    return ((state._1,state._2), false)
+
   val board = state._1
   val (x,y) = getPoint(move)
   var valid = true
@@ -44,9 +47,9 @@ def queenController(move : String, state : (Array[Array[String]], Int)) : ((Arra
   for(pair <- offset)
       valid &&= validate(board,x,y,pair._1,pair._2)
 
-  if(checkInput(move) && board(x)(y).charAt(1) == '♛')
+  if(board(x)(y).charAt(1) == '♛')
     board(x)(y) = board(x)(y).updated(1,' ')
-  else if(valid && checkInput(move) && board(x)(y).charAt(1) != '♛')
+  else if(valid && board(x)(y).charAt(1) != '♛')
     board(x)(y) = board(x)(y).updated(1,'♛')
 
   ((board,state._2), valid)
