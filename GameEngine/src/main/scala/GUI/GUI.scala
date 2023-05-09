@@ -2,6 +2,8 @@ package GUI
 
 import java.awt.{Color, Dimension, Font, Frame, Window}
 import javax.swing.{ImageIcon, JButton, JFrame, JLabel, JTextField, SwingConstants, WindowConstants}
+import java.awt.{Color, Graphics2D}
+import scala.swing.{Component, Dimension}
 
 def newFrame(text : String, width : Int, height : Int): JFrame = {
   val frame: JFrame = new JFrame()
@@ -12,6 +14,17 @@ def newFrame(text : String, width : Int, height : Int): JFrame = {
   frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
   frame.setIconImage(new ImageIcon("./pics/logo.png").getImage)
   frame
+}
+
+def createCircle(diameter: Int, color: Color): Component = {
+  new Component {
+    preferredSize = new Dimension(diameter, diameter)
+
+    override def paintComponent(g: Graphics2D): Unit = {
+      g.setColor(color)
+      g.fillOval(0, 0, size.width, size.height)
+    }
+  }
 }
 
 def newLabel(x_ : Int, y_ : Int, width : Int, height : Int, image : String) : JLabel = {
