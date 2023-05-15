@@ -73,7 +73,7 @@ def drawBoard(grid : Array[Array[JLabel]], state : (Array[Array[String]], Int)) 
   }
 }
 
-def validateAndUpdate(pieceValidation: ((Int,Int), (Int,Int)) => Boolean,
+def validateAndUpdate(pieceValidation: (Array[Array[String]], (Int,Int), (Int,Int)) => Boolean,
                       from: (Int,Int), to: (Int,Int),
                       board: Array[Array[String]]) : Boolean = {
 
@@ -81,7 +81,7 @@ def validateAndUpdate(pieceValidation: ((Int,Int), (Int,Int)) => Boolean,
     return false
 
   val piece : String = getPiece(board(from._1)(from._2).charAt(1))
-  val valid = pieceValidation(from,to)
+  val valid = pieceValidation(board,from,to)
 
   if(!valid && piece != "WhitePawn" && piece != "BlackPawn")
     return false
@@ -123,9 +123,11 @@ def diagonalBlackPawn(from: (Int,Int), to: (Int,Int),
   false
 }
 
-def validateMove(x1 : Int, y1 : Int, x2 : Int, y2 : Int, dirX : Int, dirY : Int) : Boolean = {
+def validateMove(board: Array[Array[String]], x1 : Int, y1 : Int, x2 : Int, y2 : Int, dirX : Int, dirY : Int) : Boolean = {
   var (i,j) = (x1,y1)
   while((i + dirX > 0) && (j + dirY > 0) && (i + dirX < 9) && (j + dirY < 9)) {
+    if((i + dirX, j + dirY) != (x2,y2) && board(i + dirX)(j + dirY).charAt(1) != ' ')
+      return false
     if((i + dirX, j + dirY) == (x2, y2))
       return true
     i += dirX
@@ -134,25 +136,25 @@ def validateMove(x1 : Int, y1 : Int, x2 : Int, y2 : Int, dirX : Int, dirY : Int)
   false
 }
 
-def validateRook(from : (Int,Int), to : (Int,Int)) : Boolean = {
+def validateRook(board: Array[Array[String]], from : (Int,Int), to : (Int,Int)) : Boolean = {
   val offset = List((1,0),(-1,0),(0,1),(0,-1))
   for(pair <- offset)
-    if (validateMove(from._1,from._2,to._1,to._2,pair._1,pair._2))
+    if (validateMove(board,from._1,from._2,to._1,to._2,pair._1,pair._2))
       return true
   false
 }
 
-def validateBishop(from : (Int,Int), to : (Int,Int)) : Boolean = {
+def validateBishop(board: Array[Array[String]], from : (Int,Int), to : (Int,Int)) : Boolean = {
   val offset = List((1,1),(-1,-1),(-1,1),(1,-1))
   for(pair <- offset)
-    if (validateMove(from._1,from._2,to._1,to._2,pair._1,pair._2))
+    if (validateMove(board,from._1,from._2,to._1,to._2,pair._1,pair._2))
       return true
   false
 }
 
-def validateQueen(from : (Int,Int), to : (Int,Int)) : Boolean = validateBishop(from,to) || validateRook(from,to)
+def validateQueen(board: Array[Array[String]], from : (Int,Int), to : (Int,Int)) : Boolean = validateBishop(board,from,to) || validateRook(board,from,to)
 
-def validateKnight(from : (Int,Int), to : (Int,Int)) : Boolean = {
+def validateKnight(board: Array[Array[String]], from : (Int,Int), to : (Int,Int)) : Boolean = {
   val offset = List((2,1),(2,-1),(-2,1),(-2,-1),(-1,2),(1,2),(-1,-2),(1,-2))
   for(pair <- offset)
     if (from._1 + pair._1 == to._1 && from._2 + pair._2 == to._2)
@@ -160,7 +162,7 @@ def validateKnight(from : (Int,Int), to : (Int,Int)) : Boolean = {
   false
 }
 
-def validateKing(from : (Int,Int), to : (Int,Int)) : Boolean = {
+def validateKing(board: Array[Array[String]], from : (Int,Int), to : (Int,Int)) : Boolean = {
   val offset = List((1,1),(-1,-1),(-1,1),(1,-1),(-1,0),(1,0),(0,1),(0,-1))
   for(pair <- offset)
     if (from._1 + pair._1 == to._1 && from._2 + pair._2 == to._2)
@@ -168,7 +170,7 @@ def validateKing(from : (Int,Int), to : (Int,Int)) : Boolean = {
   false
 }
 
-def validateWhitePawn(from : (Int,Int), to : (Int,Int)) : Boolean = {
+def validateWhitePawn(board: Array[Array[String]], from : (Int,Int), to : (Int,Int)) : Boolean = {
   val offset = List((-1,0))
   for(pair <- offset)
     if (from._1 + pair._1 == to._1 && from._2 + pair._2 == to._2)
@@ -182,7 +184,7 @@ def validateWhitePawn(from : (Int,Int), to : (Int,Int)) : Boolean = {
   false
 }
 
-def validateBlackPawn(from : (Int,Int), to : (Int,Int)) : Boolean = {
+def validateBlackPawn(board: Array[Array[String]], from : (Int,Int), to : (Int,Int)) : Boolean = {
   val offset = List((1,0))
   for(pair <- offset)
     if (from._1 + pair._1 == to._1 && from._2 + pair._2 == to._2)
@@ -196,7 +198,7 @@ def validateBlackPawn(from : (Int,Int), to : (Int,Int)) : Boolean = {
   false
 }
 
-def getPieceValidation(piece : String) : ((Int,Int), (Int,Int)) => Boolean = piece match {
+def getPieceValidation(piece : String) : (Array[Array[String]], (Int,Int), (Int,Int)) => Boolean = piece match {
   case "Rook" => validateRook
   case "Knight" => validateKnight
   case "Bishop" => validateBishop
