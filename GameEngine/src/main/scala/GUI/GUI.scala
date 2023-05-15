@@ -1,8 +1,7 @@
 package GUI
 
-import java.awt.{Color, Dimension, Font, Frame, Window}
-import javax.swing.{ImageIcon, JButton, JFrame, JLabel, JTextField, SwingConstants, WindowConstants}
-import java.awt.{Color, Graphics2D}
+import java.awt.{Color, Dimension, Font, Frame, Graphics, Graphics2D, RenderingHints, Window}
+import javax.swing.{ImageIcon, JButton, JFrame, JLabel, JPanel, JTextField, SwingConstants, WindowConstants}
 import scala.swing.{Component, Dimension}
 
 def newFrame(text : String, width : Int, height : Int): JFrame = {
@@ -16,15 +15,21 @@ def newFrame(text : String, width : Int, height : Int): JFrame = {
   frame
 }
 
-def createCircle(diameter: Int, color: Color): Component = {
-  new Component {
-    preferredSize = new Dimension(diameter, diameter)
-
-    override def paintComponent(g: Graphics2D): Unit = {
-      g.setColor(color)
-      g.fillOval(0, 0, size.width, size.height)
+def newCircleCell(opaque : Boolean, color : Color) : JPanel = {
+  val panel = new JPanel() {
+    override def paintComponent(g: Graphics): Unit = {
+      super.paintComponent(g)
+      val g2d = g.asInstanceOf[Graphics2D]
+      g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
+      val x = (getWidth - 100) / 2 + 18
+      val y = (getHeight - 100) / 2 + 18
+      g2d.setColor(color)
+      g2d.fillOval(x, y, 60, 60)
     }
   }
+  panel.setBackground(new Color(60,60,80,120))
+  panel.setOpaque(opaque)
+  panel
 }
 
 def newLabel(x_ : Int, y_ : Int, width : Int, height : Int, image : String) : JLabel = {
@@ -32,6 +37,17 @@ def newLabel(x_ : Int, y_ : Int, width : Int, height : Int, image : String) : JL
   label.setIcon(new ImageIcon(image))
   label.setBounds(x_, y_, width, height)
   label
+}
+
+def newPanel(text : String) : JPanel = {
+  val panel = new JPanel()
+  panel.setOpaque(false)
+  val label = new JLabel();
+  label.setText(text);
+  label.setForeground(new Color(240,240,240))
+  label.setFont(new Font("Monospace", Font.BOLD, 30))
+  panel.add(label);
+  panel
 }
 
 def newButton(text: String): JButton = {

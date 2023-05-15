@@ -31,8 +31,9 @@ def connect4Drawer(state : (Array[Array[String]], Int)) : Unit = {
   val containerLabel = newLabel(0, 0, 1100, 800, "./pics/game.png")
   mainFrame.add(containerLabel)
   val innerLabel = newLabel(165, 50, 700, 650, "")
-  innerLabel.setLayout(new GridLayout(7, 7, 2, 2))
-  val grid: Array[Array[JLabel]] = Array.ofDim[JLabel](7, 7)
+  innerLabel.setBackground(new Color(68,68,69))
+  innerLabel.setLayout(new GridLayout(7, 7, 0, 1))
+  val grid: Array[Array[JPanel]] = Array.ofDim[JPanel](7, 7)
   drawBoard(grid, state)
   for (i <- 0 until 7; j <- 0 until 7)
     innerLabel.add(grid(i)(j))
@@ -41,17 +42,20 @@ def connect4Drawer(state : (Array[Array[String]], Int)) : Unit = {
   mainFrame.setVisible(true)
 }
 
-def drawBoard(grid : Array[Array[JLabel]], state : (Array[Array[String]], Int)) : Unit = {
-  grid(0)(0) = newBoardCell("", null, Color.LIGHT_GRAY, false, 20)
+def drawBoard(grid : Array[Array[JPanel]], state : (Array[Array[String]], Int)) : Unit = {
+
+  grid(0)(0) = newCircleCell(false,null)
 
   for (i <- 0 until 7)
-    grid(0)(i) = newBoardCell((97 + i).toChar.toString, null, Color.LIGHT_GRAY, false, 20)
+    grid(0)(i) = newPanel((i + 97).toChar.toString)
 
   for (i <- 1 until 7; j <- 0 until 7) {
-    grid(i)(j) = newBoardCell("", null, new Color(20, 25, 25), true, 50)
+//    grid(i)(j) = newBoardCell("", null, new Color(20, 25, 25), true, 50)
+    grid(i)(j) = newCircleCell(true,null)
+    grid(i)(j).setOpaque(true)
     state._1(i)(j).charAt(0) match {
-      case 'y' => grid(i)(j).setBackground(Color.YELLOW)
-      case 'b' => grid(i)(j).setBackground(Color.BLUE)
+      case 'y' => grid(i)(j).setForeground(new Color(255,0,0,150))
+      case 'b' => grid(i)(j).setForeground(new Color(0,50,255,150))
       case _ =>
     }
   }
