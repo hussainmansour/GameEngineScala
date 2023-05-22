@@ -38,25 +38,25 @@ import javax.swing.JFrame
       }
     })
 
-//    solveButton.addActionListener(_ => {
-//      val q1 = new Query("consult('D:/Github Repos/GameEngineScala/GameEngine/src/main/scala/8Queen.pl')")
-//      println("consult "+(if (q1.hasSolution) "succesful" else "failed"))
-//      val q = new Query("n_queens(8,Q).")
-//      println(q.hasSolution)
-//
-//      val sol = q.oneSolution().get("Q").toString
-//      println(sol)
-//    })
     solveButton.addActionListener(_ => {
-      val q1 = new Query("consult('D:/Github Repos/GameEngineScala/GameEngine/src/main/scala/Sudoku.pl')")
-      println("consult " + (if (q1.hasSolution) "succesful" else "failed"))
-      val q = new Query("Rows = [[6,_,2,3,1,4,7,8,9],[_,_,8,2,_,_,_,5,3],[_,7,3,_,8,5,2,6,4],[_,_,5,_,9,8,_,_,6],[7,_,6,_,_,2,_,9,5],[_,_,9,6,_,3,8,7,1],[_,9,_,_,_,_,5,3,2],[_,3,_,8,2,9,6,_,7],[2,6,7,5,3,_,_,4,8]],sudoku(Rows), maplist(label, Rows)."
-      )
+      val q1 = new Query("consult('D:/Github Repos/GameEngineScala/GameEngine/src/main/scala/8Queen.pl')")
+      println("consult "+(if (q1.hasSolution) "succesful" else "failed"))
+      val q = new Query("N = 8, n_queens(N, Qs), labeling([ff], Qs).")
       println(q.hasSolution)
 
-      val sol = q.oneSolution().get("Rows").toString
+      val sol = q.oneSolution().get("Qs").toString
       println(sol)
     })
+//    solveButton.addActionListener(_ => {
+//      val q1 = new Query("consult('D:/Github Repos/GameEngineScala/GameEngine/src/main/scala/Sudoku.pl')")
+//      println("consult " + (if (q1.hasSolution) "succesful" else "failed"))
+//      val q = new Query("Rows = [[6,_,2,3,1,4,7,8,9],[_,_,8,2,_,_,_,5,3],[_,7,3,_,8,5,2,6,4],[_,_,5,_,9,8,_,_,6],[7,_,6,_,_,2,_,9,5],[_,_,9,6,_,3,8,7,1],[_,9,_,_,_,_,5,3,2],[_,3,_,8,2,9,6,_,7],[2,6,7,5,3,_,_,4,8]],sudoku(Rows), maplist(label, Rows)."
+//      )
+//      println(q.hasSolution)
+//
+//      val sol = q.oneSolution().get("Rows").toString
+//      println(sol)
+//    })
   }
 
 
