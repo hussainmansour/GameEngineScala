@@ -1,6 +1,7 @@
 package Games.Queen8
 import GUI.*
-import java.awt.{Color, Font, GridLayout}
+
+import java.awt.{Color, FlowLayout, Font, GridLayout}
 import javax.swing.{JButton, JFrame, JLabel, SwingConstants}
 
 def queenInit() : (Array[Array[String]], Int) = {

@@ -10,6 +10,7 @@ import Games.Sudoku.*
 import Games.TicTacToe.*
 import MainMenu.*
 import GUI.*
+import org.jpl7._
 
 @main
 def main(): Unit = {
