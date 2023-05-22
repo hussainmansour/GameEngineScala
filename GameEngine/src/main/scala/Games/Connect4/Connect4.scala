@@ -60,52 +60,6 @@ def drawBoard(grid : Array[Array[JPanel]], state : (Array[Array[String]], Int)) 
     }
   }
 }
-
-
-//class CircleLabel(text: String, color: Color, size: Int) extends JLabel(text) {
-//  setPreferredSize(new Dimension(size, size))
-//
-//  override def paintComponent(g: Graphics): Unit = {
-//    super.paintComponent(g)
-//    val g2d = g.asInstanceOf[Graphics2D]
-//    g2d.setColor(color)
-//    g2d.fillOval(0, 0, getWidth, getHeight)
-//  }
-//}
-//def connect4Drawer(state: (Array[Array[String]], Int)): Unit = {
-//  val mainFrame: JFrame = getMainFrame("Games")
-//  val containerLabel = newLabel(0, 0, 1100, 800, "./pics/game.png")
-//  mainFrame.add(containerLabel)
-//  val innerPanel = new JPanel(new GridLayout(7, 7, 2, 2))
-//  val grid: Array[Array[CircleLabel]] = Array.ofDim[CircleLabel](7, 7)
-//  drawBoard(grid, state)
-//  for (i <- 0 until 7; j <- 0 until 7)
-//    innerPanel.add(grid(i)(j))
-//
-//  containerLabel.add(innerPanel)
-//  mainFrame.pack()
-//  mainFrame.setVisible(true)
-//
-//}
-
-//def drawBoard(grid: Array[Array[CircleLabel]], state: (Array[Array[String]], Int)): Unit = {
-//  grid(0)(0) = new CircleLabel("", Color.LIGHT_GRAY, 20)
-//
-//  for (i <- 0 until 7)
-//    grid(0)(i) = new CircleLabel((97 + i).toChar.toString, Color.LIGHT_GRAY, 20)
-//
-//  for (i <- 1 until 7; j <- 0 until 7) {
-//    grid(i)(j) = new CircleLabel("", new Color(20, 25, 25), 50)
-//    state._1(i)(j).charAt(0) match {
-//      case 'y' => grid(i)(j).setBackground(Color.YELLOW)
-//      case 'b' => grid(i)(j).setBackground(Color.BLUE)
-//      case _ =>
-//    }
-//  }
-//  println("Drawer")
-//}
-//
-
 def connect4Controller(move : String, state : (Array[Array[String]], Int)) : ((Array[Array[String]], Int),Boolean) = {
   val board = state._1
   val turn = state._2

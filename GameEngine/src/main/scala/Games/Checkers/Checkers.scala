@@ -131,15 +131,6 @@ def checkJump(board : Array[Array[String]], x : Int, y : Int, dirX : Int, dirY :
   if(board(dirX)(dirY).charAt(1) != ' ' || board((x+dirX)/2)(math.abs(y+dirY)/2).charAt(1) == ' ') {
     return false
   }
-  if (board(x)(y).charAt(1) == 0x26C0 && (dirX - x <= 0 || dirY - y > 1 || dirY - y < -1 || dirY == y)) {
-    println("here4")
-    return false
-  }
-  //ordinary move
-  if (board(x)(y).charAt(1) == 0x26C2 && (dirX - x >= 0 || dirY - y > 1 || dirY - y < -1 || dirY == y)) {
-    println("here5")
-    return false
-  }
   // check for player try to move piece in wrong direction
   if(board(x)(y).charAt(1) == 0x26C0 && (math.abs(x-dirX) != 2  || math.abs(y-dirY) != 2 || board((x+dirX)/2)(math.abs(y+dirY)/2).charAt(1) == 0x26C0 || board((x+dirX)/2)(math.abs(y+dirY)/2).charAt(1) == 0x26C1)) {
     println("here6")

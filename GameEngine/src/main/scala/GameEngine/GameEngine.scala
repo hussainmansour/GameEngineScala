@@ -10,7 +10,7 @@ import javax.swing.JFrame
                 controlGame : (String, (Array[Array[String]], Int)) => ((Array[Array[String]], Int), Boolean)) : Unit = {
 
     val inputFrame = newFrame("Input",500,150)
-    inputFrame.setLocation(1000,500)
+    inputFrame.setLocation(1400,500)
     val inputButton = newButton("Enter")
     val inputField = newTextField()
     inputFrame.setLayout(new FlowLayout())
