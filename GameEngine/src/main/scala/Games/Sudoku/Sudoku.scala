@@ -98,26 +98,28 @@ def validateBox(board : Array[Array[String]], x : Int, y : Int, value : String) 
 }
 
 def generateRandomBoard() : Array[Array[String]] = {
+
   val random = new Random()
+  val board = generateBoard()
   val grid = Array.ofDim[String](10, 10)
-  for(i <- 0 to 9; j <- 0 to 9)
-    grid(i)(j) = "  "
-  var row = 0
-  var col = 0
-  var randomNumber = 0
-  val noOfCellsToBeGenerated = random.nextInt(14) + 36
+
+  for(i <- 0 to 9; j <- 0 to 9) {
+    if(i == 0 || j == 0) {
+      grid(i)(j) = "  "
+    }
+    else {
+      grid(i)(j) = board(i - 1)(j - 1).toString.concat("M")
+    }
+  }
+
+  val noOfCellsToBeRemoved = 81 - (random.nextInt(14) + 20)
 
   var i = 1
-  while (i <= noOfCellsToBeGenerated) {
-    row = random.nextInt(9) + 1
-    col = random.nextInt(9) + 1
-    randomNumber = random.nextInt(9) + 1
-    if(grid(row)(col) == "  ") {
-      val move = row.toString.concat((col - 1 + 97).toChar.toString).concat(" ").concat(randomNumber.toString)
-      val state = sudokuController(move,(grid,1))
-      if(state._2) {
-        grid(row)(col) = randomNumber.toString.concat("M")
-      }
+  while (i <= noOfCellsToBeRemoved) {
+    val row = random.nextInt(9) + 1
+    val col = random.nextInt(9) + 1
+    if(grid(row)(col) != "  ") {
+      grid(row)(col) = "  "
     } else {
       i -= 1
     }
@@ -136,10 +138,37 @@ def solveSudoku(state : Array[Array[String]]) : Unit = {
 
   val q1 = new Query("consult('E:/CSED25/2nd Year/Second term/Programming Paradigms/Phase2/GameEngineScala/GameEngine/src/main/scala/Sudoku.pl')")
   println("consult " + (if (q1.hasSolution) "succesful" else "failed"))
-  val q = new Query("Rows = [[6,_,2,3,1,4,7,8,9],[_,_,8,2,_,_,_,5,3],[_,7,3,_,8,5,2,6,4],[_,_,5,_,9,8,_,_,6],[7,_,6,_,_,2,_,9,5],[_,_,9,6,_,3,8,7,1],[_,9,_,_,_,_,5,3,2],[_,3,_,8,2,9,6,_,7],[2,6,7,5,3,_,_,4,8]],sudoku(Rows), maplist(label, Rows).")
+
+  val input = initSolve(state)
+  printf(input)
+
+  val q = new Query(s"Rows = $input,sudoku(Rows), maplist(label, Rows).")
   println(q.hasSolution)
+
+  if(!q.hasSolution) {
+    printf("No Solution exist!")
+    return
+  }
 
   val sol = q.oneSolution().get("Rows").toString
   println(sol)
 
+  val formattedSol = sol.substring(1, sol.length - 1)
+  val rows = formattedSol.split(",")
+  val allString = rows.mkString.replace("[", "").replace("]","").replace(" ","")
+
+  for(i <- 0 until 9; j <- 0 until 9) {
+    state(i + 1)(j + 1) = state(i + 1)(j + 1).updated(0,allString(9 * i + j))
+  }
+  
+  sudokuDrawer((state,1))
+}
+
+def initSolve(state : Array[Array[String]]) : String = {
+  val board = Array.ofDim[String](9, 9)
+  for(i <- 1 to 9; j <- 1 to 9) {
+    board(i - 1)(j - 1) = state(i)(j)
+  }
+  var input = "[" + board.map(row => "[" + row.map(element => if (element.trim.isEmpty) "_" else element).mkString(",") + "]").mkString(",").filter(_ != 'M') + "]"
+  input
 }
