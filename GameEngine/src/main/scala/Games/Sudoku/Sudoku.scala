@@ -1,9 +1,10 @@
 package Games.Sudoku
 import GUI.*
+
 import scala.util.Random
-import java.awt.{Color, GridLayout}
+import java.awt.{Color, Font, GridLayout}
 import javax.swing.{JFrame, JLabel}
-import org.jpl7._
+import org.jpl7.*
 
 def sudokuInit() : (Array[Array[String]], Int) = (generateRandomBoard(),1)
 
@@ -146,7 +147,17 @@ def solveSudoku(state : Array[Array[String]]) : Unit = {
   println(q.hasSolution)
 
   if(!q.hasSolution) {
-    printf("No Solution exist!")
+    println("No Solution exist!")
+    val frame: JFrame = new JFrame()
+    frame.setTitle("Solution")
+    frame.setSize(350, 200)
+    frame.setLocationRelativeTo(null)
+    frame.setResizable(false)
+    val noSolution = newLabel(25,5,100,100,null)
+    noSolution.setText("No Solution exist!")
+    noSolution.setFont(new Font("Monospace", Font.BOLD, 30))
+    frame.add(noSolution)
+    frame.setVisible(true)
     return
   }
 
@@ -169,6 +180,6 @@ def initSolve(state : Array[Array[String]]) : String = {
   for(i <- 1 to 9; j <- 1 to 9) {
     board(i - 1)(j - 1) = state(i)(j)
   }
-  var input = "[" + board.map(row => "[" + row.map(element => if (element.trim.isEmpty) "_" else element).mkString(",") + "]").mkString(",").filter(_ != 'M') + "]"
+  val input = "[" + board.map(row => "[" + row.map(element => if (element.trim.isEmpty) "_" else element).mkString(",") + "]").mkString(",").filter(_ != 'M') + "]"
   input
 }

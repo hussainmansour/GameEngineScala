@@ -1,9 +1,9 @@
 package Games.Queen8
 import GUI.*
-import org.jpl7._
+import org.jpl7.*
 
 import java.awt.{Color, FlowLayout, Font, GridLayout}
-import javax.swing.{JButton, JFrame, JLabel, SwingConstants}
+import javax.swing.{ImageIcon, JButton, JFrame, JLabel, SwingConstants, WindowConstants}
 
 def queenInit() : (Array[Array[String]], Int) = {
   val board = Array.ofDim[String](9,9)
@@ -111,7 +111,17 @@ def solveQueen(state : Array[Array[String]]) : Unit = {
   println(q.hasSolution)
 
   if(!q.hasSolution) {
-    printf("No Solution exist!")
+    println("No Solution exist!")
+    val frame: JFrame = new JFrame()
+    frame.setTitle("Solution")
+    frame.setSize(350, 200)
+    frame.setLocationRelativeTo(null)
+    frame.setResizable(false)
+    val noSolution = newLabel(25,5,100,100,null)
+    noSolution.setText("No Solution exist!")
+    noSolution.setFont(new Font("Monospace", Font.BOLD, 30))
+    frame.add(noSolution)
+    frame.setVisible(true)
     return
   }
 
